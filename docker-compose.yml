@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: regression_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      AWS_ACCESS_KEY_ID: ""
+      AWS_SECRET_ACCESS_KEY: ""
+      AWS_DEFAULT_REGION: ""
+    networks:
+      - app-net
+
+  ui:
+    container_name: regression_ui
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: "http://api:8000/predict"
+    depends_on:
+      - api
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

@@ -59,8 +59,8 @@ def predict_batch(data: List[dict]):
     if not MODEL_PATH.exists():
         return {"error": f"Model not found at {str(MODEL_PATH)}"}
 
-    #df = pd.DataFrame(data)
-    df = pd.read_csv(TRAIN_FE_PATH).head()
+    df = pd.DataFrame(data)
+    #df = pd.read_csv(TRAIN_FE_PATH).head()
     if df.empty:
         return {"error": "No data provided"}
     
