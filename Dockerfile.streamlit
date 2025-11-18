@@ -5,6 +5,7 @@
 FROM --platform=$BUILDPLATFORM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+
 WORKDIR /app
 # Install uv and project deps (from pyproject.toml)
 COPY pyproject.toml uv.lock* ./
