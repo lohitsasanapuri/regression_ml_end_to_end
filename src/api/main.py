@@ -10,9 +10,10 @@ from src.Inference_pipeline.inference import predict
 # configuing AWS S3 client
 S3_BUCKET = os.getenv("S3_BUCKET", "ml-prj-data-repo")
 REGION = os.getenv("AWS_REGION", "us-east-1")
-access_key = os.getenv("AWS_ACCESS_KEY_ID", "#your-access-key")
-secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "#your-secret-key")
-s3 = boto3.client("s3", region_name=REGION, aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+#access_key = os.getenv("AWS_ACCESS_KEY_ID", "#your-access-key")
+#secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "#your-secret-key")
+s3 = boto3.client("s3", region_name=REGION)
+#, aws_access_key_id=access_key, aws_secret_access_key=secret_key)
 
 def download_file_from_s3(s3_key: str, local_path: Path) -> None:
     """Download a file from S3 to a local path."""
