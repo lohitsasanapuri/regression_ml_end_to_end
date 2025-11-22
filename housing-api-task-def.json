@@ -1,32 +1,112 @@
 {
-  "family": "housing-api-task-ecs",
-  "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:iam::739623013917:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::739623013917:role/ecs_s3_access",
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "cpu": "1024",
-  "memory": "3072",
-  "containerDefinitions": [
-    {
-      "name": "housing-api",
-      "image": "739623013917.dkr.ecr.us-east-1.amazonaws.com/housing-api:latest",
-      "essential": true,
-      "portMappings": [
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "containerDefinitions": [
         {
-          "containerPort": 8000,
-          "protocol": "tcp"
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "STREAMLIT_BROWSER_GATHERUSAGESTATS",
+                    "value": "false"
+                },
+                {
+                    "name": "STREAMLIT_SERVER_BASEURLPATH",
+                    "value": "/dashboard"
+                },
+                {
+                    "name": "API_URL",
+                    "value": "http://housing-api-alb-936729217.us-east-1.elb.amazonaws.com/predict"
+                },
+                {
+                    "name": "STREAMLIT_SERVER_ADDRESS",
+                    "value": "0.0.0.0"
+                },
+                {
+                    "name": "STREAMLIT_SERVER_PORT",
+                    "value": "8501"
+                }
+            ],
+            "environmentFiles": [],
+            "essential": true,
+            "image": "739623013917.dkr.ecr.us-east-1.amazonaws.com/housing-streamlit:latest",
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/housing-streamlit",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "mountPoints": [],
+            "name": "housing-streamlit",
+            "portMappings": [
+                {
+                    "appProtocol": "http",
+                    "containerPort": 8051,
+                    "hostPort": 8051,
+                    "name": "housing-streamlit-8501-tcp",
+                    "protocol": "tcp"
+                }
+            ],
+            "systemControls": [],
+            "ulimits": [],
+            "volumesFrom": []
         }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/housing-api-task-ecs",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs"
+    ],
+    "cpu": "512",
+    "enableFaultInjection": false,
+    "executionRoleArn": "arn:aws:iam::739623013917:role/ecsTaskExecutionRole",
+    "family": "housing-streamlit",
+    "memory": "2048",
+    "networkMode": "awsvpc",
+    "placementConstraints": [],
+    "registeredAt": "2025-11-22T21:15:19.558Z",
+    "registeredBy": "arn:aws:iam::739623013917:root",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
-      }
-    }
-  ]
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "revision": 4,
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "status": "ACTIVE",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:739623013917:task-definition/housing-streamlit:4",
+    "taskRoleArn": "arn:aws:iam::739623013917:role/ecs_s3_access",
+    "volumes": [],
+    "tags": []
 }
