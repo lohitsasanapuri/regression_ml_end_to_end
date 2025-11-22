@@ -61,6 +61,6 @@ jobs:
       - name: Deploy housing-streamlit-service
         run: |
           aws ecs update-service \
-            --cluster housing-cluster \
+            --cluster housing-api-cluster \
             --service housing-streamlit-service \
             --force-new-deployment
