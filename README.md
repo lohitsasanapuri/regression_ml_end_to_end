@@ -85,11 +85,15 @@ Why Separation of Concerns? The UI (Streamlit) interacts with the Model only via
 
 ## 📂 Project Structure
 
-REGRESSION_ML_END_TO_END
-├── .github/workflows         # CI/CD pipelines (ci.yml)
-├── data                      # Raw and processed datasets
-├── models                    # Serialized models (xgb_model.pkl, encoders)
-├── notebooks                 # Experimentation & EDA
+```text
+REGRESSION_ML_END_TO_END/
+│
+├── .github/
+│   └── workflows/                 # CI/CD pipelines (ci.yml)
+├── data/                          # Raw and processed datasets
+├── models/                        # Serialized models (xgb_model.pkl, encoders)
+│
+├── notebooks/                     # Experimentation & EDA
 │   ├── 00_data_processing.ipynb
 │   ├── 01_data_cleaning.ipynb
 │   ├── 02_feature_eng_and_encoding.ipynb
@@ -97,39 +101,42 @@ REGRESSION_ML_END_TO_END
 │   ├── 05_xgboost.ipynb
 │   ├── 06_Hyperparameter_tuning_mlflow.ipynb
 │   └── 07_Push_dataset_aws.ipynb
-├── src                       # Production Source Code
-│   ├── api                   # FastAPI application (main.py)
-│   ├── feature_pipeline      # Data transformation logic
-│   ├── training_pipeline     # Model training logic
-│   └── inference_pipeline    # Prediction logic
-├── tests                     # Unit & Integration tests
-├── housing-api-task-def.json # AWS ECS Task Definition (API)
-├── streamlit-task-def.json   # AWS ECS Task Definition (UI)
-├── Dockerfile                # API Docker Image
-├── Dockerfile.streamlit      # UI Docker Image
-├── docker-compose.yml        # Local orchestration
-└── pyproject.toml            # Dependencies
-
+│
+├── src/                           # Production Source Code
+│   ├── api/                       # FastAPI application (main.py)
+│   ├── feature_pipeline/          # Data transformation logic
+│   ├── inference_pipeline/        # Prediction logic
+│   └── training_pipeline/         # Model training logic
+│
+├── tests/                         # Unit & Integration tests
+│
+├── housing-api-task-def.json      # AWS ECS Task Definition (API)
+├── streamlit-task-def.json        # AWS ECS Task Definition (UI)
+├── Dockerfile                     # API Docker Image
+├── Dockerfile.streamlit           # UI Docker Image
+├── docker-compose.yml             # Local orchestration
+└── pyproject.toml                 # Dependencies
+```
 
 ## 🚀 Local Installation & Setup
 
 This project uses uv for high-performance dependency management.
 
-1. Initialize Environment
-
-### 1. Initialize uv and python version
+### 1. Initialize Environment
+``` bash
+# 1. Initialize uv and python version
 uv init
 uv python install 3.11
 uv python pin 3.11
 
-### 2. Install Dependencies
+# 2. Install Dependencies
 uv sync
 
-### 3. Activate the virtual environment (Powershell)
+#3. Activate the virtual environment (Powershell)
 .\.venv\Scripts\Activate
+```
 
-
-2. VS Code Configuration (Manual Step)
+### 2. VS Code Configuration (Manual Step)
 
 To ensure VS Code uses the correct environment:
 
@@ -138,34 +145,36 @@ Open the Command Palette (Ctrl+Shift+P).
 Search for Python: Select Interpreter.
 
 Select the path manually:
-.\.venv\Scripts\python.exe
 
-3. Setup Jupyter Kernel
+``` bash
+.\.venv\Scripts\python.exe
+```
+### 3. Setup Jupyter Kernel
 
 Required for running the notebooks locally:
-
-### Install kernel support
+``` bash
+# Install kernel support
 uv add ipykernel
 
-### Register the kernel
+# Register the kernel
 python -m ipykernel install --user --name=regression-ml-end-to-end --display-name "regression-ml-end-to-end"
-
+``` 
 
 ## 🏃 Running the Application
 
-Option A: Docker Compose (Recommended)
+## Option A: Docker Compose (Recommended)
 
 Build and run both the API and the UI simultaneously.
-
-### 1. Start application
+``` bash
+# 1. Start application
 docker compose up -d
 
-### 2. Rebuild and start (use this if you modify code or Dockerfiles)
+# 2. Rebuild and start (use this if you modify code or Dockerfiles)
 docker compose up -d --build
 
-### 3. Stop application
+# 3. Stop application
 docker compose down
-
+``` 
 
 API Docs: http://localhost:8000/docs
 
@@ -173,63 +182,64 @@ Streamlit UI: http://localhost:8501
 
 MLflow UI: http://localhost:5000
 
-Option B: Running Services Manually
+## Option B: Running Services Manually
 
-1. Start MLflow UI
+### 1. Start MLflow UI
 View experiment logs and model registry.
-
+``` bash
 mlflow ui
-### Accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000)
-###Press CTRL + C to Quit
+Accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000)
+Press CTRL + C to Quit
+``` 
 
-
-2. Run FastAPI Backend
-
+### 2. Run FastAPI Backend
+``` bash
 uvicorn src.api.main:app --reload
+``` 
 
-
-3. Run Streamlit Frontend
+### 3. Run Streamlit Frontend
 (If running outside Docker)
-
+``` bash
 streamlit run src/ui/app.py 
 ### (Adjust path based on your specific UI file location)
-
+``` 
 
 ## 🐳 Docker Commands (Manual)
 
 If you need to build specific images individually using docker run with environment variables:
 
-1. Build & Run API
+### 1. Build & Run API
 
+``` bash
 docker build -t regression-ml-api . 
 
-### Run container with AWS Credentials (replace values as needed)
+# Run container with AWS Credentials (replace values as needed)
 docker run -d -p 8000:8000 --name regression_api \
     -e AWS_ACCESS_KEY_ID="" \
     -e AWS_SECRET_ACCESS_KEY="" \
     -e AWS_DEFAULT_REGION="us-east-1" \
     regression-ml-api 
 
-
-2. Build & Run UI
-
+```
+### 2. Build & Run UI
+``` bash
 docker build -t regression-ml-ui . -f Dockerfile.streamlit
 
 docker run -d -p 8501:8501 --name regression-ml-ui regression-ml-ui
-
+```
 
 🧪 Testing
 
 The project includes a robust testing suite using pytest.
-
-### Run all tests
+``` bash
+# Run all tests
 pytest tests/
 
-### Run specific tests
+# Run specific tests
 pytest tests/test_train.py
 pytest tests/test_inference.py
 
-
+```
 ## 👏 Acknowledgements
 
 This project was developed as a hands-on implementation of MLOps principles, inspired by the comprehensive guide from Anas Riad. It serves as a practical demonstration of taking a model from a Jupyter Notebook to a deployed cloud application.
