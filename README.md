@@ -1,6 +1,6 @@
-End-to-End Mlops Production ready: Housing Price Prediction Pipeline 🏠
+# End-to-End Mlops Production ready: Housing Price Prediction Pipeline 🏠
 
-📋 Project Overview
+## 📋 Project Overview
 
 This project implements a complete, production-ready Machine Learning pipeline for predicting housing prices. It goes beyond simple model training by implementing MLOps best practices, ensuring the model is reproducible, trackable, and deployable.
 
@@ -8,133 +8,74 @@ The system is built using a modular architecture, containerized with Docker, and
 
 Key Features
 
-Modular Pipeline: Separation of concerns with dedicated pipelines for feature_engineering, training, and inference.
+* Modular Pipeline: Separation of concerns with dedicated pipelines for feature_engineering, training, and inference.
 
-Experiment Tracking: Full integration with MLflow for tracking hyperparameters, metrics, and model versioning.
+* Experiment Tracking: Full integration with MLflow for tracking hyperparameters, metrics, and model versioning.
 
-Advanced Data Processing: Includes dedicated notebooks for data cleaning, frequency encoding, and target encoding.
+* Advanced Data Processing: Includes dedicated notebooks for data cleaning, frequency encoding, and target encoding.
 
-Microservices Architecture:
+* Microservices Architecture:
 
-API Service: A FastAPI backend serving predictions.
+  - API Service: A FastAPI backend serving predictions.
 
-UI Service: A Streamlit frontend for user interaction.
+  - UI Service: A Streamlit frontend for user interaction.
 
-Infrastructure as Code: Includes AWS Task Definitions (housing-api-task-def.json) for ECS deployment.
+* Infrastructure as Code: Includes AWS Task Definitions (housing-api-task-def.json) for ECS deployment.
 
-CI/CD: Automated testing (pytest) and deployment workflows via GitHub Actions.
+* CI/CD: Automated testing (pytest) and deployment workflows via GitHub Actions.
 
-📸 Project Screenshots
+## 📸 Project Screenshots
+Fast API :
 
-<!--
-TIPS FOR ADDING IMAGES:
-
-Create a folder named assets in your repo.
-
-Upload your images to that folder.
-
-Update the paths below (e.g., ./assets/my-ui-screenshot.png).
--->
+![Image Alt](./assets/House_price_predictions.png).
 
 Streamlit UI
 
 The user interface for making predictions.
-
-<!--  -->
+![Image Alt](./assets/House_price_predictions_UI.png).
+![Image Alt](./assets/House_price_predictions_UI_2.png).
 
 MLflow Tracking
 
 Experiment tracking and model registry dashboard.
 
-<!--  -->
+![Image Alt](./assets/mlflow-experiments.png).
+![Image Alt](./assets/mlflow-metrics_tracking.png).
+![Image Alt](./assets/mlflow-model_registry.png).
 
-🛠️ Tech Stack & Tools
+## 🛠️ Tech Stack & Tools
 
-Category
+| Category | Technologies |
+| :--- | :---: |
+| Language & Env | Python 3.11, uv (Astral) |
+| ML Libraries | XGBoost, Scikit-Learn, Pandas, Numpy |
+| Tracking | MLflow |
+| Web Frameworks | FastAPI (Backend), Streamlit (Frontend)|
+| Containerization | Docker, Docker Compose |
+| Cloud (AWS) | ECR (Registry), ECS (Orchestration), S3 (Storage), EC2 |
+| Testing | Pytest, Smoke Tests (Jupyter) |
 
-Technologies
-
-Language & Env
-
-Python 3.11, uv (Astral)
-
-ML Libraries
-
-XGBoost, Scikit-Learn, Pandas, NumPy
-
-Tracking
-
-MLflow
-
-Web Frameworks
-
-FastAPI (Backend), Streamlit (Frontend)
-
-Containerization
-
-Docker, Docker Compose
-
-Cloud (AWS)
-
-ECR (Registry), ECS (Orchestration), S3 (Storage)
-
-Testing
-
-Pytest, Smoke Tests (Jupyter)
-
-☁️ Cloud Architecture
+## ☁️ Cloud Architecture
 
 The application is deployed on AWS using a serverless container architecture. The diagram below illustrates the flow from code commit to production deployment.
 
-graph TD
-    subgraph "Local Development"
-        Dev[User / Developer]
-        Code[VS Code / Git]
-    end
+![Image Alt](./assets/Aws_work_flow.png).
 
-    subgraph "CI/CD Pipeline (GitHub Actions)"
-        Push[Git Push]
-        Test[Pytest & Lint]
-        Build[Docker Build]
-    end
+## 🔄 Deployment Workflow
 
-    subgraph "AWS Production Environment"
-        ECR[AWS ECR Registry]
-        
-        subgraph "ECS Cluster (Fargate)"
-            API[FastAPI Container]
-            UI[Streamlit Container]
-        end
-        
-        S3[(AWS S3 Bucket)]
-    end
+* Push to GitHub: Code is pushed to the repository, triggering the ci.yaml workflow.
 
-    Dev -->|Commit Code| Code
-    Code -->|Trigger| Push
-    Push --> Test
-    Test -->|Success| Build
-    Build -->|Push Image| ECR
-    ECR -->|Pull Image| API
-    ECR -->|Pull Image| UI
-    API -.->|Load Model| S3
-    UI -->|Request| API
+* Continuous Integration: GitHub Actions runs the unit tests (pytest).
 
+* Continuous Delivery:
 
-🔄 Deployment Workflow
+    If tests pass, the Docker images are built.
 
-Push to GitHub: Code is pushed to the repository, triggering the ci.yaml workflow.
+    Images are tagged and pushed to Amazon Elastic Container Registry (ECR).
 
-Continuous Integration: GitHub Actions runs the unit tests (pytest).
+* Deployment: Amazon ECS pulls the new images and updates the running Fargate tasks with zero downtime.
 
-Continuous Delivery:
-
-If tests pass, the Docker images are built.
-
-Images are tagged and pushed to Amazon Elastic Container Registry (ECR).
-
-Deployment: Amazon ECS pulls the new images and updates the running Fargate tasks with zero downtime.
-
-🏗️ Design Decisions
+## 🏗️ Design Decisions
 
 Why AWS Fargate? We chose Fargate (Serverless ECS) to avoid managing EC2 instances. It scales automatically and reduces operational overhead.
 
@@ -142,7 +83,7 @@ Why Docker? Ensures the model runs exactly the same in the cloud as it does on t
 
 Why Separation of Concerns? The UI (Streamlit) interacts with the Model only via the API (FastAPI), decoupling the frontend from the ML logic.
 
-📂 Project Structure
+## 📂 Project Structure
 
 REGRESSION_ML_END_TO_END
 ├── .github/workflows         # CI/CD pipelines (ci.yml)
@@ -170,21 +111,21 @@ REGRESSION_ML_END_TO_END
 └── pyproject.toml            # Dependencies
 
 
-🚀 Local Installation & Setup
+## 🚀 Local Installation & Setup
 
 This project uses uv for high-performance dependency management.
 
 1. Initialize Environment
 
-# 1. Initialize uv and python version
+### 1. Initialize uv and python version
 uv init
 uv python install 3.11
 uv python pin 3.11
 
-# 2. Install Dependencies
+### 2. Install Dependencies
 uv sync
 
-# 3. Activate the virtual environment (Powershell)
+### 3. Activate the virtual environment (Powershell)
 .\.venv\Scripts\Activate
 
 
@@ -203,26 +144,26 @@ Select the path manually:
 
 Required for running the notebooks locally:
 
-# Install kernel support
+### Install kernel support
 uv add ipykernel
 
-# Register the kernel
+### Register the kernel
 python -m ipykernel install --user --name=regression-ml-end-to-end --display-name "regression-ml-end-to-end"
 
 
-🏃 Running the Application
+## 🏃 Running the Application
 
 Option A: Docker Compose (Recommended)
 
 Build and run both the API and the UI simultaneously.
 
-# 1. Start application
+### 1. Start application
 docker compose up -d
 
-# 2. Rebuild and start (use this if you modify code or Dockerfiles)
+### 2. Rebuild and start (use this if you modify code or Dockerfiles)
 docker compose up -d --build
 
-# 3. Stop application
+### 3. Stop application
 docker compose down
 
 
@@ -238,8 +179,8 @@ Option B: Running Services Manually
 View experiment logs and model registry.
 
 mlflow ui
-# Accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000)
-# Press CTRL + C to Quit
+### Accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000)
+###Press CTRL + C to Quit
 
 
 2. Run FastAPI Backend
@@ -251,10 +192,10 @@ uvicorn src.api.main:app --reload
 (If running outside Docker)
 
 streamlit run src/ui/app.py 
-# (Adjust path based on your specific UI file location)
+### (Adjust path based on your specific UI file location)
 
 
-🐳 Docker Commands (Manual)
+## 🐳 Docker Commands (Manual)
 
 If you need to build specific images individually using docker run with environment variables:
 
@@ -262,7 +203,7 @@ If you need to build specific images individually using docker run with environm
 
 docker build -t regression-ml-api . 
 
-# Run container with AWS Credentials (replace values as needed)
+### Run container with AWS Credentials (replace values as needed)
 docker run -d -p 8000:8000 --name regression_api \
     -e AWS_ACCESS_KEY_ID="" \
     -e AWS_SECRET_ACCESS_KEY="" \
@@ -281,14 +222,14 @@ docker run -d -p 8501:8501 --name regression-ml-ui regression-ml-ui
 
 The project includes a robust testing suite using pytest.
 
-# Run all tests
+### Run all tests
 pytest tests/
 
-# Run specific tests
+### Run specific tests
 pytest tests/test_train.py
 pytest tests/test_inference.py
 
 
-👏 Acknowledgements
+## 👏 Acknowledgements
 
 This project was developed as a hands-on implementation of MLOps principles, inspired by the comprehensive guide from Anas Riad. It serves as a practical demonstration of taking a model from a Jupyter Notebook to a deployed cloud application.
